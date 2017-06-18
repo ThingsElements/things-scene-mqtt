@@ -1,6 +1,4 @@
 bower_components
 node_modules
 npm-debug.log
-things-scene-clone.js
-
-things-scene-firebase.js
+things-scene-mqtt.js
