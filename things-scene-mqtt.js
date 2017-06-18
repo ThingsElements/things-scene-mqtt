@@ -258,4 +258,4 @@ exports.default = Mqtt;
 
 scene.Component.register('mqtt', Mqtt);
 
-},{"paho-mqtt/":1}]},{},[2,3]);
+},{"paho-mqtt/":1}]},{},[2]);
