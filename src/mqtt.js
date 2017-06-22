@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017 HatioLab Inc. All rights reserved.  
+ * Copyright (c) 2017, HatioLab Inc. All right reserved.
  */
 
 import 'paho-mqtt/'

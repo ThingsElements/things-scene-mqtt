@@ -37,7 +37,9 @@
     "should": "^8.0.2",
     "uglify-js": "^3.0.17",
     "watchify": "^3.3.1",
-    "node-canvas": "Automattic/node-canvas"
+    "node-canvas": "Automattic/node-canvas",
+    "gulp": "^3.8.5",
+    "gulp-header-license": "^1.0.9"
   },
   "dependencies": {
     "paho-mqtt": "^1.0.3"
