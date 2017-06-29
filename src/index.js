@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, HatioLab Inc. All right reserved.
+ * Copyright © HatioLab Inc. All rights reserved.
  */
 
 export { default as Mqtt } from './mqtt'
