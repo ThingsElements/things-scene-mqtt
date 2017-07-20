@@ -74,11 +74,11 @@ export default class Mqtt extends RectPath(Shape) {
 
     console.log(Paho, Paho.MQTT, Paho.MQTT.Client)
     var client = new Paho.MQTT.Client(broker, port, clientId);
-    
+
     client.onConnectionLost = responseObject => {
       console.log("connection lost: " + responseObject.errorMessage);
     };
-    
+
     client.onMessageArrived = message => {
 
       console.log(message.destinationName, ' -- ', message.payloadString);
@@ -119,6 +119,7 @@ export default class Mqtt extends RectPath(Shape) {
       height
     } = this.bounds;
 
+    context.beginPath();
     context.drawImage(Mqtt.image, left, top, width, height);
   }
 
