@@ -86,7 +86,11 @@ export default class Mqtt extends RectPath(Shape) {
       // TODO component-id 와 연결될 message 속성을 결정하는 방법을 고민할 것.
       var id = message.destinationName;
       var data = message.payloadString;
-      this.root.variable(id, data)
+      try {
+        this.root.variable(id, JSON.parse(data));
+      } catch(e) {
+        console.error(e)
+      }
     };
 
     var options = {
