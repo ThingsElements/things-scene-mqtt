@@ -55,7 +55,7 @@ export default class Mqtt extends RectPath(Shape) {
     return Mqtt._image
   }
 
-  ready() {
+  added() {
     if (!this.app.isViewMode)
       return;
 
@@ -69,7 +69,8 @@ export default class Mqtt extends RectPath(Shape) {
       clientId,
       topic,
       qos = 1,
-      retain = false
+      retain = false,
+      format = 'JSON'
     } = this.model
 
     console.log(Paho, Paho.MQTT, Paho.MQTT.Client)
@@ -86,19 +87,19 @@ export default class Mqtt extends RectPath(Shape) {
       // TODO component-id 와 연결될 message 속성을 결정하는 방법을 고민할 것.
       var id = message.destinationName;
       var data = message.payloadString;
-      try {
-        this.root.variable(id, JSON.parse(data));
-      } catch(e) {
-        console.error(e)
-      }
+
+      if (data)
+        data = this._formatData(data, format)
+
+      this.root.variable(id, data)
     };
 
     var options = {
       timeout: 3,
       onSuccess: function () {
         console.log("mqtt connected");
-        // client.subscribe(topic, {qos: 1});
-        client.subscribe('#', {qos: 1});
+        client.subscribe(topic, {qos: 1});
+        // client.subscribe('#', {qos: 1});
       },
       onFailure: function (message) {
         console.log("Connection failed: " + message.errorMessage);
@@ -125,6 +126,20 @@ export default class Mqtt extends RectPath(Shape) {
 
     context.beginPath();
     context.drawImage(Mqtt.image, left, top, width, height);
+  }
+
+  _formatData(data, format) {
+    var formattedData
+    switch (format.toUpperCase()) {
+      case 'JSON':
+        formattedData = JSON.parse(data)
+        break;
+      default:
+        formattedData = data
+        break;
+    }
+
+    return formattedData
   }
 
   get nature(){
