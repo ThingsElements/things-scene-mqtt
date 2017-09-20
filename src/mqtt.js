@@ -30,7 +30,7 @@ const NATURE = {
     property: 'qos'
   },{
     type: 'string',
-    label: 'Client Id',
+    label: 'client-id',
     name: 'clientId',
     property: 'clientId'
   },{
