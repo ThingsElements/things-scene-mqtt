@@ -110,7 +110,8 @@ export default class Mqtt extends RectPath(Shape) {
     this._client.connect(options);
   }
 
-  disposed() {
+  dispose() {
+    super.dispose()
     this._client && this._client.disconnect();
     delete this._client;
   }
