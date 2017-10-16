@@ -33,7 +33,20 @@ const NATURE = {
     label: 'client-id',
     name: 'clientId',
     property: 'clientId'
-  },{
+  }, {
+    type: 'select',
+    label: 'data-format',
+    name: 'dataFormat',
+    property: {
+      options: [{
+        display: 'Plain Text',
+        value: 'text'
+      }, {
+        display: 'JSON',
+        value: 'json'
+      }]
+    }
+  } ,{
     type: 'checkbox',
     label: 'retain',
     name: 'retain',
@@ -70,7 +83,7 @@ export default class Mqtt extends RectPath(Shape) {
       topic,
       qos = 1,
       retain = false,
-      format = 'JSON'
+      format = 'text'
     } = this.model
 
     console.log(Paho, Paho.MQTT, Paho.MQTT.Client)
@@ -88,10 +101,7 @@ export default class Mqtt extends RectPath(Shape) {
       var id = message.destinationName;
       var data = message.payloadString;
 
-      if (data)
-        data = this._formatData(data, format)
-
-      this.root.variable(id, data)
+      this.data = this._formatData(data, format)
     };
 
     var options = {
@@ -110,9 +120,14 @@ export default class Mqtt extends RectPath(Shape) {
     this._client.connect(options);
   }
 
-  disposed() {
-    this._client && this._client.disconnect();
+  dispose() {
+    try {
+      this._client && this._client.disconnect();
+    } catch(e) {
+      console.error(e)
+    }
     delete this._client;
+    super.dispose()
   }
 
   _draw(context) {
@@ -130,8 +145,8 @@ export default class Mqtt extends RectPath(Shape) {
 
   _formatData(data, format) {
     var formattedData
-    switch (format.toUpperCase()) {
-      case 'JSON':
+    switch (format) {
+      case 'json':
         formattedData = JSON.parse(data)
         break;
       default:
