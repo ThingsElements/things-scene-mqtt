@@ -83,7 +83,7 @@ export default class Mqtt extends RectPath(Shape) {
       topic,
       qos = 1,
       retain = false,
-      format = 'text'
+      dataFormat = 'text'
     } = this.model
 
     console.log(Paho, Paho.MQTT, Paho.MQTT.Client)
@@ -101,7 +101,7 @@ export default class Mqtt extends RectPath(Shape) {
       var id = message.destinationName;
       var data = message.payloadString;
 
-      this.data = this._formatData(data, format)
+      this.data = this._formatData(data, dataFormat)
     };
 
     var options = {
