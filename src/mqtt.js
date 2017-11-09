@@ -86,7 +86,6 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       dataFormat = 'text'
     } = this.model
 
-    console.log(Paho, Paho.MQTT, Paho.MQTT.Client)
     var client = new Paho.MQTT.Client(broker, port, clientId);
 
     client.onConnectionLost = responseObject => {
@@ -94,25 +93,17 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     };
 
     client.onMessageArrived = message => {
-
-      console.log(message.destinationName, ' -- ', message.payloadString);
-
-      // TODO component-id 와 연결될 message 속성을 결정하는 방법을 고민할 것.
-      var id = message.destinationName;
-      var data = message.payloadString;
-
-      this.data = this._convertDataFormat(data, dataFormat)
+      this.data = this._convertDataFormat(data.payloadString, dataFormat)
     };
 
     var options = {
       timeout: 3,
       onSuccess: function () {
-        console.log("mqtt connected");
+        console.log("MQTT connected");
         client.subscribe(topic, { qos: 1 });
-        // client.subscribe('#', {qos: 1});
       },
       onFailure: function (message) {
-        console.log("Connection failed: " + message.errorMessage);
+        console.log("MQTT connection failed: " + message.errorMessage);
       }
     };
 
