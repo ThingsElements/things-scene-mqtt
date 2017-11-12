@@ -12,12 +12,30 @@ const NATURE = {
     type: 'string',
     label: 'broker',
     name: 'broker',
-    property: 'broker'
+    property: 'broker',
+    placeholder: 'WebSocket hostname'
   }, {
     type: 'number',
     label: 'port',
     name: 'port',
-    property: 'port'
+    property: 'port',
+    placeholder: '15675'
+  }, {
+    type: 'string',
+    label: 'path',
+    name: 'path',
+    property: 'path',
+    placeholder: '/mqtt or /ws'
+  }, {
+    type: 'string',
+    label: 'user',
+    name: 'user',
+    property: 'user'
+  }, {
+    type: 'string',
+    label: 'password',
+    name: 'password',
+    property: 'password'
   }, {
     type: 'string',
     label: 'topic',
@@ -27,7 +45,8 @@ const NATURE = {
     type: 'number',
     label: 'qos',
     name: 'qos',
-    property: 'qos'
+    property: 'qos',
+    placeholder: '0..2'
   }, {
     type: 'string',
     label: 'client-id',
@@ -51,6 +70,11 @@ const NATURE = {
     label: 'retain',
     name: 'retain',
     property: 'retain'
+  }, {
+    type: 'checkbox',
+    label: 'ssl',
+    name: 'ssl',
+    property: 'ssl'
   }]
 }
 
@@ -83,24 +107,39 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       topic,
       qos = 1,
       retain = false,
-      dataFormat = 'text'
+      path = '/mqtt',
+      dataFormat = 'text',
+      user,
+      password,
+      ssl = false
     } = this.model
 
-    var client = new Paho.MQTT.Client(broker, port, clientId);
+    var client = new Paho.MQTT.Client(broker, port, path, clientId);
 
     client.onConnectionLost = responseObject => {
       console.log("connection lost: " + responseObject.errorMessage);
     };
 
     client.onMessageArrived = message => {
-      this.data = this._convertDataFormat(data.payloadString, dataFormat)
+      this.data = this._convertDataFormat(message.payloadString, dataFormat)
     };
 
     var options = {
-      timeout: 3,
+      userName: user,
+      password: password,
+      useSSL: ssl,
+      timeout: 30,
       onSuccess: function () {
         console.log("MQTT connected");
-        client.subscribe(topic, { qos: 1 });
+        client.subscribe(topic, {
+          qos,
+          onSuccess: () => {
+            console.log('subscription success')
+          },
+          onFailure: (failure) => {
+            console.log('subscription failed', failure.errorCode, failure.errorMessage)
+          }
+        });
       },
       onFailure: function (message) {
         console.log("MQTT connection failed: " + message.errorMessage);
@@ -118,6 +157,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       console.error(e)
     }
     delete this._client;
+
     super.dispose()
   }
 
