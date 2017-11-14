@@ -103,7 +103,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     var {
       broker,
       port,
-      clientId,
+      clientId = 'THINGS-BOARD',
       topic,
       qos = 1,
       retain = false,
@@ -114,7 +114,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       ssl = false
     } = this.model
 
-    var client = new Paho.MQTT.Client(broker, port, path, clientId);
+    var client = new Paho.MQTT.Client(broker, port, path, [clientId, Date.now()].join('-'));
 
     client.onConnectionLost = responseObject => {
       console.log("connection lost: " + responseObject.errorMessage);

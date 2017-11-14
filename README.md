@@ -24,6 +24,12 @@ $ brew services restart mosquitto
 * topic : topic
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
+```
+클라이언트 아이디는 (브로커 입장에서) 유일한 연결 노드의 이름을 의미하며, 브로커에서 모니터링하기 위한 용도로 유일하게 적어준다.
+클라이언트 아이디 속성을 비워두면, 자동으로 'THINGS-BOARD-{timestamp}‘로 자동 생성된다.
+클라이언트 아이디 속성을 입력하면, 자동으로 '{{client-id}}-{timestamp}'로 자동 생성된다.
+클라이언트 아이디 속성에 timestamp를 추가하는 이유는, 유일한 아이디를 만들기 위해서이다.
+```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
@@ -36,6 +42,12 @@ $ brew services restart mosquitto
 * topic : topic
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
+```
+클라이언트 아이디는 (브로커 입장에서) 유일한 연결 노드의 이름을 의미하며, 브로커에서 모니터링하기 위한 용도로 유일하게 적어준다.
+클라이언트 아이디 속성을 비워두면, 자동으로 'THINGS-BOARD-{timestamp}‘로 자동 생성된다.
+클라이언트 아이디 속성을 입력하면, 자동으로 '{{client-id}}-{timestamp}'로 자동 생성된다.
+클라이언트 아이디 속성에 timestamp를 추가하는 이유는, 유일한 아이디를 만들기 위해서이다.
+```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
