@@ -125,8 +125,6 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     };
 
     var options = {
-      userName: user,
-      password: password,
       useSSL: ssl,
       timeout: 30,
       onSuccess: function () {
@@ -145,6 +143,11 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
         console.log("MQTT connection failed: " + message.errorMessage);
       }
     };
+
+    if(user)
+      options.user = user;
+    if(password)
+      options.password = password;
 
     this._client = client;
     this._client.connect(options);
