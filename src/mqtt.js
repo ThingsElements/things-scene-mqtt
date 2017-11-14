@@ -145,7 +145,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     };
 
     if(user)
-      options.user = user;
+      options.userName = user;
     if(password)
       options.password = password;
 

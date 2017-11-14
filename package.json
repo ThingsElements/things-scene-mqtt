@@ -1,6 +1,6 @@
 {
   "name": "things-scene-mqtt",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "An element providing a starting point for your own reusable Polymer elements.",
   "main": "index.js",
   "directories": {
