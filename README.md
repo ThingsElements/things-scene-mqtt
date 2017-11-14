@@ -14,7 +14,7 @@ $ echo -e "listener 1884\nprotocol websockets\nlistener 1883\nprotocol mqtt" >> 
 $ brew services restart mosquitto
 ```
 ## 설정
-### MQTT 브로커를 사용한 경우
+### MQTT 브로커로 mosquitto를 사용한 경우
 * broker : hostname of the broker
 * port : websocket service port number (default 1884)
 * path : '/mqtt'
