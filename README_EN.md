@@ -1,21 +1,20 @@
 # MQTT data source component for Things Scene
 ## Concept
-* Subscribe the topic using MQTT Web Socket protocol.
-* Pass the message to the data of the component with the same ID as the topic.
-* Support messages in JSON type only.
-## Creating a development environment (Based on MacOS)
-### Installing mosquitto with an MQTT broker
-* Install mosquitto using homebrew.
+* Subscribe the topic via MQTT Web Socket protocol.
+* Data Spread is set in data binding.
+## Creating a Development Environment (Based on MacOS)
+### Installing mosquitto through MQTT Broker
+* Use homebrew to install mosquitto.
 ```
 $ brew install mosquitto
 ```
-* Since Things Scene is for browsers, it must be accessible to MQTT broker via a web socket. So, enable the web service function in mosquitto.
+* Since Things Scene is for the browser, it must be accessible to MQTT broker via a web socket. So, enable the web service function on mosquitto.
 ```
 $ echo -e "listener 1884\nprotocol websockets\nlistener 1883\nprotocol mqtt" >> /usr/local/opt/mosquitto/etc/mosquitto/mosquitto.conf
 $ brew services restart mosquitto
 ```
 ## Setting
-### If used a MQTT Broker
+### When use mosquitto as a MQTT Broker
 * broker : hostname of the broker
 * port : websocket service port number (default 1884)
 * path : '/mqtt'
@@ -24,10 +23,16 @@ $ brew services restart mosquitto
 * topic : topic
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
+```
+The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
+If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
+If enter the client ID property, it is automatically created as '{{client-id}}-{timestamp}'.
+The reason for adding timestamp to the client ID property is to create a unique ID.
+```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
-### If used MQTT-Websocket Plug-in of RabbitMQ
+### When use MQTT-Websocket Plug-in of RabbitMQ
 * broker : hostname of the broker
 * port : websocket service port number (default 15675)
 * path : '/ws'
@@ -36,12 +41,18 @@ $ brew services restart mosquitto
 * topic : topic
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
+```
+The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
+If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
+If enter the client ID property, it is automatically created as '{{client-id}}-{timestamp}'.
+The reason for adding timestamp to the client ID property is to create a unique ID.
+```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
-## Message Exchange if used MQTT-Websocket Plug-in of Rabbit MQ
+## Message Exchange when use MQTT-Websocket Plug-in of Rabbit MQ
 ```
-When you use MQTT-Websocket Plug-in of Rabbit MQ,
+If use MQTT-Websocket Plug-in of Rabbit MQ,
 it is routed by 'amq.topic' exchange of durable 'topic' type.
 Therefore, the topic property of the above MQTT Data Source acts as a routing key.
 
@@ -58,7 +69,7 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
   }
 
   conn.createChannel(function (err, ch) {
-    // Set exchange to amq.topic and durable option to true.
+    // Set exchange to amq.topic and duplication option to true.
     var ex = 'amq.topic';
 
     ch.assertExchange(ex, 'topic', { durable: true });
@@ -68,7 +79,7 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
       y: 200
     };
 
-    // If set the torch property to location
+    // When set the topic property to location
     ch.publish(ex, 'location', new Buffer(JSON.stringify(location)));
   });
 });
