@@ -3,7 +3,7 @@
 * Subscribe the topic via MQTT Web Socket protocol.
 * Data Spread is set in data binding.
 ## Creating a Development Environment (Based on MacOS)
-### Installing mosquitto through MQTT Broker
+### Installing mosquitto as MQTT broker
 * Use homebrew to install mosquitto.
 ```
 $ brew install mosquitto
@@ -14,7 +14,7 @@ $ echo -e "listener 1884\nprotocol websockets\nlistener 1883\nprotocol mqtt" >> 
 $ brew services restart mosquitto
 ```
 ## Setting
-### When use mosquitto as a MQTT Broker
+### When use mosquitto as MQTT Broker
 * broker : hostname of the broker
 * port : websocket service port number (default 1884)
 * path : '/mqtt'
@@ -26,7 +26,7 @@ $ brew services restart mosquitto
 ```
 The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
 If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
-If enter the client ID property, it is automatically created as '{{client-id}}-{timestamp}'.
+If enter the client ID property, it will be automatically created as '{{client-id}}-{timestamp}'.
 The reason for adding timestamp to the client ID property is to create a unique ID.
 ```
 * data-format : [Plain Text, JSON]
@@ -44,7 +44,7 @@ The reason for adding timestamp to the client ID property is to create a unique 
 ```
 The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
 If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
-If enter the client ID property, it is automatically created as '{{client-id}}-{timestamp}'.
+If enter the client ID property, it will be automatically created as '{{client-id}}-{timestamp}'.
 The reason for adding timestamp to the client ID property is to create a unique ID.
 ```
 * data-format : [Plain Text, JSON]
@@ -69,7 +69,7 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
   }
 
   conn.createChannel(function (err, ch) {
-    // Set exchange to amq.topic and duplication option to true.
+    // Set exchange to amq.topic and durable option to true.
     var ex = 'amq.topic';
 
     ch.assertExchange(ex, 'topic', { durable: true });
