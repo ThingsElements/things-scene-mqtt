@@ -1,20 +1,20 @@
-# Things Scene을 위한 MQTT 데이타소스 컴포넌트
-## 개념
-* MQTT 웹소켓 프로토콜로 토픽을 서브스크라이브 한다.
-* 데이타 확산(Spread)는 데이터 바인딩에서 설정한다.
-## 개발환경 만들기 (MacOS를 기준으로 함)
-### MQTT 브로커로 mosquitto 설치하기
-* homebrew를 이용해서 mosquitto를 설치한다.
+# MQTT data source component for Things Scene
+## Concept
+* Subscribe the topic via MQTT Web Socket protocol.
+* Data Spread is set in data binding.
+## Creating a Development Environment (Based on MacOS)
+### Installing mosquitto as MQTT broker
+* Use homebrew to install mosquitto.
 ```
 $ brew install mosquitto
 ```
-* Things Scene은 브라우저용이므로, MQTT 브로커에 웹소켓으로 접속할 수 있어야 한다. 그래서, mosquitto에 웹서비스 기능을 활성화한다.
+* Since Things Scene is for the browser, it must be accessible to MQTT broker via a web socket. So, enable the web service function on mosquitto.
 ```
 $ echo -e "listener 1884\nprotocol websockets\nlistener 1883\nprotocol mqtt" >> /usr/local/opt/mosquitto/etc/mosquitto/mosquitto.conf
 $ brew services restart mosquitto
 ```
-## 설정
-### MQTT 브로커로 mosquitto를 사용한 경우
+## Setting
+### When use mosquitto as MQTT Broker
 * broker : hostname of the broker
 * port : websocket service port number (default 1884)
 * path : '/mqtt'
@@ -24,15 +24,15 @@ $ brew services restart mosquitto
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
 ```
-클라이언트 아이디는 (브로커 입장에서) 유일한 연결 노드의 이름을 의미하며, 브로커에서 모니터링하기 위한 용도로 유일하게 적어준다.
-클라이언트 아이디 속성을 비워두면, 자동으로 'THINGS-BOARD-{timestamp}‘로 자동 생성된다.
-클라이언트 아이디 속성을 입력하면, 자동으로 '{{client-id}}-{timestamp}'로 자동 생성된다.
-클라이언트 아이디 속성에 timestamp를 추가하는 이유는, 유일한 아이디를 만들기 위해서이다.
+The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
+If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
+If enter the client ID property, it will be automatically created as '{{client-id}}-{timestamp}'.
+The reason for adding timestamp to the client ID property is to create a unique ID.
 ```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
-### RabbitMQ의 MQTT-Websocket 플러그인을 사용한 경우
+### When use MQTT-Websocket Plug-in of RabbitMQ
 * broker : hostname of the broker
 * port : websocket service port number (default 15675)
 * path : '/ws'
@@ -42,22 +42,22 @@ $ brew services restart mosquitto
 * qos : QOS level [0, 1, 2]
 * client-id : (unique) client id
 ```
-클라이언트 아이디는 (브로커 입장에서) 유일한 연결 노드의 이름을 의미하며, 브로커에서 모니터링하기 위한 용도로 유일하게 적어준다.
-클라이언트 아이디 속성을 비워두면, 자동으로 'THINGS-BOARD-{timestamp}‘로 자동 생성된다.
-클라이언트 아이디 속성을 입력하면, 자동으로 '{{client-id}}-{timestamp}'로 자동 생성된다.
-클라이언트 아이디 속성에 timestamp를 추가하는 이유는, 유일한 아이디를 만들기 위해서이다.
+The client ID is the name of the only connection node (from the broker's point of view) and is unique for monitoring by the broker.
+If leave the client ID property blank, it will be automatically created as 'THINGS-BOARD-{timestamp}'.
+If enter the client ID property, it will be automatically created as '{{client-id}}-{timestamp}'.
+The reason for adding timestamp to the client ID property is to create a unique ID.
 ```
 * data-format : [Plain Text, JSON]
 * retain : true or false
 * ssl : true or false (false)
-## Rabbit MQ의 MQTT-Websocket 플러그인을 사용하는 경우 메시지 Exchange
+## Message Exchange when use MQTT-Websocket Plug-in of Rabbit MQ
 ```
-Rabbit MQ의 MQTT-Websocket 플러그인을 사용하는 경우,
-durable 'topic' 타입의 'amq.topic' exchange에 의해서 라우팅된다.
-따라서, 위 MQTT Data Source의 topic 속성은 라우팅 키의 역할을 한다.
+If use MQTT-Websocket Plug-in of Rabbit MQ,
+it is routed by 'amq.topic' exchange of durable 'topic' type.
+Therefore, the topic property of the above MQTT Data Source acts as a routing key.
 
-Rabbit MQ의 AMQP를 사용해서 MQTT Data Source에서 받을 수 있도록 하려면,
-아래의 javascript 샘플 코드를 참조하라.
+To receive from MQTT Data Source using AMQP of Rabbit MQ,
+see the JavaScript sample code below.
 ```
 ```
 var amqp = require('amqplib/callback_api');
@@ -69,7 +69,7 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
   }
 
   conn.createChannel(function (err, ch) {
-    // exchange를 amq.topic 으로 설정하고, durable option을 true로 한다.
+    // Set exchange to amq.topic and durable option to true.
     var ex = 'amq.topic';
 
     ch.assertExchange(ex, 'topic', { durable: true });
@@ -79,7 +79,7 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
       y: 200
     };
 
-    // topic 속성을 location 으로 설정한 경우.
+    // When set the topic property to location
     ch.publish(ex, 'location', new Buffer(JSON.stringify(location)));
   });
 });
