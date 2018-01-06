@@ -2,7 +2,7 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 
-import 'paho-mqtt/'
+import MQTT from 'paho-mqtt';
 
 const NATURE = {
   mutable: false,
@@ -114,7 +114,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       ssl = false
     } = this.model
 
-    var client = new Paho.MQTT.Client(broker, port, path, [clientId, Date.now()].join('-'));
+    var client = new MQTT.Client(broker, port, path, [clientId, Date.now()].join('-'));
 
     client.onConnectionLost = responseObject => {
       console.log("connection lost: " + responseObject.errorMessage);
