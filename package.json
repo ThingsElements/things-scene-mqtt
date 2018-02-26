@@ -6,11 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "serve": "watchify src/*.js -o things-scene-mqtt.js src/index.js & polymer serve",
-    "test": "./node_modules/.bin/mocha --require should --compilers js:babel-core/register test/**/test-*.js",
-    "build": "browserify src/index.js -o things-scene-mqtt.js && uglifyjs things-scene-mqtt.js -o things-scene-mqtt-min.js"
-  },
   "repository": "git+https://github.com/ThingsElements/things-scene-mqtt.git",
   "author": "Stellan Gil <lotstar87@gmail.com>",
   "license": "ISC",

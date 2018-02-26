@@ -1,8 +1,7 @@
-import editors from './src/editors'
 import locales from './locales'
 
 var templates = [{
-  name: 'Round Button',
+  name: 'mqtt',
   /* 다국어 키 표현을 어떻게.. */
   description: '...',
   /* 다국어 키 표현을 어떻게.. */
@@ -11,18 +10,20 @@ var templates = [{
   icon: '../',
   /* 또는, Object */
   template: {
-    type: 'MQTT',
+    type: 'mqtt',
     model: {
-      type: 'mqtt',
+      type: "mqtt",
+      left: 10,
+      top: 10,
       width: 100,
       height: 100,
-      text: 'SAMPLE-BUTTON'
+      hidden: true,
+      dataFormat: 'json'
     }
   }
 }];
 
 module.exports = {
   templates,
-  editors,
   locales
 };
