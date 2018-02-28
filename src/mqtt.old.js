@@ -1,8 +1,15 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
+/**
+ * 이 코드는 paho-mqtt 클라이언트 라이브러리를 사용하는 예시임.
+ * (라이브러리 동작 오류가 있어서, 사용하지 않음.)
+ * 이 코드를 테스트하기 위해서는 package.json 의 dependencies 항목에,
+ *     "paho-mqtt": "^1.0.4"
+ * 를 추가해서 빌드한다.
+ */
 import { Component, DataSource, RectPath, Shape } from '@hatiolab/things-scene'
-import mqtt from 'mqtt';
+import MQTT from 'paho-mqtt/paho-mqtt';
 
 const NATURE = {
   mutable: false,
@@ -94,7 +101,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     return Mqtt._image
   }
 
-  ready(a, b) {
+  added() {
     if (!this.app.isViewMode)
       return;
 
@@ -104,7 +111,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
   _initMqttConnection() {
     var {
       broker,
-      port = 8441,
+      port,
       clientId = 'THINGS-BOARD',
       topic,
       qos = 1,
@@ -122,60 +129,50 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       return;
     }
 
-    clientId = [clientId, role, Date.now()].join('-');
+    var client = new MQTT.Client(broker, port, path, [clientId, Date.now()].join('-'));
 
-    var client = mqtt.connect(`ws://${broker}:${port}${path}`, {
-      keepalive: 10,
-      clientId,
-      protocolId: 'MQTT',
-      protocolVersion: 4,
-      clean: true,
-      reconnectPeriod: 1000,
-      connectTimeout: 30 * 1000,
-      will: {
-        topic: 'WillMsg',
-        payload: 'Connection Closed abnormally..!',
-        qos: 0,
-        retain: false
+    client.onConnectionLost = responseObject => {
+      console.log("connection lost: " + responseObject.errorMessage);
+    };
+
+    client.onMessageArrived = message => {
+      this.data = this._convertDataFormat(message.payloadString, dataFormat)
+    };
+
+    var options = {
+      useSSL: ssl,
+      timeout: 30,
+      onSuccess: () => {
+        console.log("MQTT connected");
+
+        (role != 'publisher') && client.subscribe(topic, {
+          qos,
+          onSuccess: () => {
+            console.log('subscription success')
+          },
+          onFailure: (failure) => {
+            console.log('subscription failed', failure.errorCode, failure.errorMessage)
+          }
+        });
       },
-      username: user,
-      password: password,
-      rejectUnauthorized: false
-    });
+      onFailure: message => {
 
-    client.on('error', err => {
-      console.error(err)
-      client.end()
-    })
+        console.log("MQTT connection failed: " + message.errorMessage);
+      }
+    };
 
-    client.on('connect', packet => {
-      console.log('client connected:', clientId, packet);
-
-      (role != 'publisher') && client.subscribe(topic, {
-        qos,
-        onSuccess: () => {
-          console.log('subscription success')
-        },
-        onFailure: (failure) => {
-          console.log('subscription failed', failure.errorCode, failure.errorMessage)
-        }
-      });
-    })
-
-    client.on('message', (topic, message, packet) => {
-      this.data = this._convertDataFormat(message.toString(), dataFormat)
-    });
-
-    client.on('close', () => {
-      console.log(clientId + ' disconnected')
-    })
+    if(user)
+      options.userName = user;
+    if(password)
+      options.password = password;
 
     this._client = client;
+    this._client.connect(options);
   }
 
   dispose() {
     try {
-      this._client && this._client.end(true, () => {});
+      this._client && this._client.disconnect();
     } catch (e) {
       console.error(e)
     }
@@ -201,23 +198,20 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     context.drawImage(Mqtt.image, left, top, width, height);
   }
 
-  onchangeData(data, before) {
-    super.onchangeData(data, before);
-
+  onchangeData(data) {
     const {
       topic,
       role = 'subscriber'
     } = this.model;
 
-    if(!this._client || !this._client.connected) {
+    console.log('onchangeData', this._client, this._client.clientId, this._client.isConnected());
+
+    if(!this._client || !this._client.isConnected() || role != 'publisher') {
       return;
     }
 
-    if(role == 'subscriber') {
-      return;
-    }
-
-    this._client.publish(topic, JSON.stringify(data), { qos: 0, retain: false })
+    console.log('data', topic, data);
+    this._client.publish(topic, JSON.stringify(data), 1, false);
   }
 
   get nature() {

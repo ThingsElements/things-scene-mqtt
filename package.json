@@ -1,6 +1,6 @@
 {
   "name": "@things-elements/things-scene-mqtt",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "",
   "main": "src/index.js",
   "directories": {
@@ -14,10 +14,10 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-mqtt#readme",
   "things-shell": true,
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
     "@hatiolab/things-shell": "^0.2.20",
-    "paho-mqtt": "^1.0.4"
+    "@things-elements/things-scene-random": "^0.1.2",
+    "mqtt": "^2.15.3"
   }
 }
