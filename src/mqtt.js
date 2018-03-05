@@ -94,7 +94,9 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
     return Mqtt._image
   }
 
-  ready(a, b) {
+  ready() {
+    super.ready();
+
     if (!this.app.isViewMode)
       return;
 
@@ -102,6 +104,14 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
   }
 
   _initMqttConnection() {
+
+    try {
+      this._client && this._client.end(true, () => {});
+    } catch (e) {
+      console.error(e)
+    }
+    delete this._client;
+    
     var {
       broker,
       port = 8441,
