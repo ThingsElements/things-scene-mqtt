@@ -1,7 +1,8 @@
 {
-  "name": "@things-elements/things-scene-mqtt",
-  "version": "0.1.17",
-  "description": "",
+  "name": "@things-scene/mqtt",
+  "version": "0.2.0",
+  "description": "MQTT Client component for things-scene",
+  "things-scene": true,
   "main": "src/index.js",
   "directories": {
     "test": "test"
@@ -13,11 +14,11 @@
     "url": "https://github.com/ThingsElements/things-scene-mqtt/issues"
   },
   "homepage": "https://github.com/ThingsElements/things-scene-mqtt#readme",
-  "things-shell": true,
-  "devDependencies": {},
+  "devDependencies": {
+    "@hatiolab/things-shell": "^0.3.0",
+    "@things-scene/random": "^0.2.0"
+  },
   "dependencies": {
-    "@hatiolab/things-shell": "^0.2.20",
-    "@things-elements/things-scene-random": "^0.1.2",
     "mqtt": "^2.15.3"
   }
 }
