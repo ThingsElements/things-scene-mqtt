@@ -227,7 +227,7 @@ export default class Mqtt extends DataSource(RectPath(Shape)) {
       return;
     }
 
-    this._client.publish(topic, JSON.stringify(data), { qos: 0, retain: false })
+    this._client.publish(topic, JSON.stringify(data.data), { qos: 0, retain: false })
   }
 
   get nature() {
