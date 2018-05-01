@@ -1,11 +1,17 @@
 {
   "name": "@things-scene/mqtt",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "MQTT Client component for things-scene",
   "things-scene": true,
   "main": "src/index.js",
   "directories": {
     "test": "test"
+  },
+  "scripts": {
+    "serve": "things-shell",
+    "serve:dev": "things-shell-dev",
+    "build": "webpack",
+    "prepublish": "webpack"
   },
   "repository": "git+https://github.com/ThingsElements/things-scene-mqtt.git",
   "author": "Stellan Gil <lotstar87@gmail.com>",
@@ -15,10 +21,11 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-mqtt#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "^0.3.0",
-    "@things-scene/random": "^0.2.0"
+    "@hatiolab/things-shell": "*",
+    "@things-scene/random": "*"
   },
   "dependencies": {
+    "@hatiolab/things-scene": "*",
     "mqtt": "^2.15.3"
   }
 }
