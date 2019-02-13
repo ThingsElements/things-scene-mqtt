@@ -3,7 +3,7 @@
   "version": "0.4.5",
   "description": "MQTT Client component for things-scene",
   "things-scene": true,
-  "main": "dist/things-scene-mqtt.js",
+  "main": "dist/things-scene-mqtt.mjs",
   "module": "dist/things-scene-mqtt.mjs",
   "jsnext:main": "dist/things-scene-mqtt.mjs",
   "directories": {
@@ -25,9 +25,12 @@
   "homepage": "https://github.com/ThingsElements/things-scene-mqtt#readme",
   "devDependencies": {
     "@hatiolab/things-shell": "^0.6.111",
-    "@things-scene/random": "*",
+    "@things-scene/random": "^0.3.7",
+    "brfs": "^2.0.1",
+    "rollup-plugin-browserify-transform": "^1.0.1",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-replace": "^2.1.0"
   },
   "dependencies": {
