@@ -6,7 +6,7 @@ import './util'
 
 import { expect } from 'chai'
 
-import '../../bower_components/things-scene-core/things-scene-min'
+import { create } from '@hatiolab/things-scene'
 import { Mqtt } from '../../src/index'
 
 describe('Mqtt', function () {
@@ -14,7 +14,7 @@ describe('Mqtt', function () {
   var board;
 
   beforeEach(function () {
-    board = scene.create({
+    board = create({
       model: {
         components: [{
           id: 'mqtt',
