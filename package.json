@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/mqtt",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "MQTT Client component for things-scene",
   "things-scene": true,
   "main": "dist/things-scene-mqtt.mjs",
