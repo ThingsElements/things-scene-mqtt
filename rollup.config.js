@@ -3,28 +3,24 @@ import resolve from "rollup-plugin-node-resolve";
 import commonjs from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import replace from "rollup-plugin-replace";
-import json from "rollup-plugin-json";
 import builtins from "rollup-plugin-node-builtins";
-import browserifyTransform from "rollup-plugin-browserify-transform";
-import brfs from "brfs";
 import globals from "rollup-plugin-node-globals";
 
 let pkg = require("./package.json");
 let external = ["@hatiolab/things-scene"];
 let plugins = [
   commonjs(),
-  builtins(),
   globals(),
+  builtins(),
   replace({
     delimiters: ["", ""],
     "#!/usr/bin/env node": ""
   }),
   babel(),
-  // json(),
-  resolve({ browser: true, preferBuiltins: true })
-  // terser({
-  //   sourcemap: true
-  // })
+  resolve({ browser: true, preferBuiltins: true }),
+  terser({
+    sourcemap: true
+  })
 ];
 
 export default [
