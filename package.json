@@ -1,11 +1,9 @@
 {
   "name": "@things-scene/mqtt",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "MQTT Client component for things-scene",
   "things-scene": true,
-  "main": "dist/things-scene-mqtt.mjs",
-  "module": "dist/things-scene-mqtt.mjs",
-  "jsnext:main": "dist/things-scene-mqtt.mjs",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },
