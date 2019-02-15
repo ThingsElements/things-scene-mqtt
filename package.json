@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/mqtt",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "MQTT Client component for things-scene",
   "things-scene": true,
   "main": "src/index.js",
@@ -11,8 +11,8 @@
     "serve": "things-shell",
     "serve:dev": "things-shell-dev",
     "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
-    "build": "rollup -c",
-    "prepublish": "rollup -c"
+    "build": "webpack && rollup -c",
+    "prepublish": "webpack && rollup -c"
   },
   "repository": "git+https://github.com/ThingsElements/things-scene-mqtt.git",
   "author": "Stellan Gil <lotstar87@gmail.com>",
@@ -32,7 +32,7 @@
     "rollup-plugin-replace": "^2.1.0"
   },
   "dependencies": {
-    "@hatiolab/things-scene": "^2.5.0-rc",
+    "@hatiolab/things-scene": "*",
     "mqtt": "^2.15.3"
   }
 }
