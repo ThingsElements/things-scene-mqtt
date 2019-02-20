@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-mqtt#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "^0.6.111",
+    "@hatiolab/things-shell": "*",
     "@things-scene/random": "^0.3.7",
     "brfs": "^2.0.1",
     "rollup-plugin-browserify-transform": "^1.0.1",
