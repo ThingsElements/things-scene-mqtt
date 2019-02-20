@@ -105,13 +105,16 @@ amqp.connect('amqp://hatiolab:hatiolab@mq.hatiolab.com', function(err, conn) {
 });
 ```
 
-# Module
+## build
 
-## UMD
+`$ yarn build`
 
-- things-scene-mqtt.js (for modern browser)
-- things-scene-mqtt-ie.js (for ie 11)
+| type | filename                | for            | tested |
+| ---- | ----------------------- | -------------- | ------ |
+| UMD  | things-scene-mqtt.js    | modern browser | X      |
+| UMD  | things-scene-mqtt-ie.js | ie 11          | O      |
+| ESM  | things-scene-mqtt.mjs   | modern browser | X      |
 
-## ES Module
+## publish
 
-- things-scene-mqtt.mjs
+`$ yarn publish`
